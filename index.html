@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>番茄钟 · 待办</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,650&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark" aria-hidden="true"></span>
+        <div>
+          <p class="eyebrow">专注工作台</p>
+          <h1>番茄钟</h1>
+        </div>
+      </div>
+      <div class="today" id="todayStats" aria-live="polite"></div>
+    </header>
+
+    <main class="layout">
+      <section class="timer-card" aria-label="番茄钟">
+        <div class="modes" role="tablist" aria-label="计时模式">
+          <button type="button" class="mode is-active" data-mode="focus" role="tab" aria-selected="true">专注</button>
+          <button type="button" class="mode" data-mode="short" role="tab" aria-selected="false">短休</button>
+          <button type="button" class="mode" data-mode="long" role="tab" aria-selected="false">长休</button>
+        </div>
+
+        <div class="ring-wrap">
+          <svg class="ring" viewBox="0 0 220 220" aria-hidden="true">
+            <circle class="ring-track" cx="110" cy="110" r="96" />
+            <circle class="ring-progress" id="ring" cx="110" cy="110" r="96" />
+          </svg>
+          <div class="time-block">
+            <p class="time" id="time">25:00</p>
+            <p class="phase" id="phaseLabel">准备专注</p>
+          </div>
+        </div>
+
+        <p class="focus-line" id="focusLine">先选一项待办，或直接开始一轮。</p>
+
+        <div class="controls">
+          <button type="button" class="btn primary" id="toggleBtn">开始</button>
+          <button type="button" class="btn ghost" id="resetBtn">重置</button>
+          <button type="button" class="btn ghost" id="skipBtn">跳过</button>
+        </div>
+
+        <div class="pips" id="pips" aria-label="本轮番茄进度"></div>
+
+        <details class="settings">
+          <summary>时长与偏好</summary>
+          <form id="settingsForm" class="settings-grid">
+            <label>专注（分钟）
+              <input type="number" name="focus" min="1" max="90" step="1" />
+            </label>
+            <label>短休（分钟）
+              <input type="number" name="short" min="1" max="30" step="1" />
+            </label>
+            <label>长休（分钟）
+              <input type="number" name="long" min="1" max="60" step="1" />
+            </label>
+            <label>长休间隔（个番茄）
+              <input type="number" name="longEvery" min="2" max="8" step="1" />
+            </label>
+            <label class="check">
+              <input type="checkbox" name="autoStart" />
+              结束后自动开始下一段
+            </label>
+            <label class="check">
+              <input type="checkbox" name="sound" />
+              结束时提示音
+            </label>
+          </form>
+        </details>
+      </section>
+
+      <section class="list-card" aria-label="待办事项">
+        <div class="list-head">
+          <div>
+            <p class="eyebrow">今天要做的事</p>
+            <h2>待办清单</h2>
+          </div>
+          <p class="count" id="openCount"></p>
+        </div>
+
+        <form id="addForm" class="add-form">
+          <input id="taskInput" type="text" maxlength="80" placeholder="写下一项具体的事，按回车添加" autocomplete="off" required />
+          <button type="submit" class="btn primary add-btn">添加</button>
+        </form>
+
+        <div class="filters" role="tablist" aria-label="筛选">
+          <button type="button" class="filter is-active" data-filter="open">未完成</button>
+          <button type="button" class="filter" data-filter="done">已完成</button>
+          <button type="button" class="filter" data-filter="all">全部</button>
+        </div>
+
+        <ul class="tasks" id="taskList"></ul>
+        <p class="empty" id="emptyState" hidden></p>
+
+        <div class="list-foot">
+          <button type="button" class="text-btn" id="clearDone">清除已完成</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>
